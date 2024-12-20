@@ -88,14 +88,28 @@ def numberOfPoolBalls(rows):
     return rows + numberOfPoolBalls(rows - 1)
 
 def numberOfPoolBallRows(balls):
-    if balls == 0:
-        return 0
-    if balls == 1:
-        return 1
-        
+    result = (-1 + math.sqrt(1 + 8*balls)) / 2
+    if result % 1 != 0:
+        return int(result) + 1
+    return result
+
 
 def colorBlender(rgb1, rgb2, midpoints, n):
-    return 42
+    if n < 0 or n > (midpoints + 1): return None
+
+    red1 = rgb1 // (10**6)
+    green1 = rgb1 // (10**3) % 1000
+    blue1 = rgb1 % 1000
+
+    red2 = rgb2 // (10**6)
+    green2 = rgb2 // (10**3) % 1000
+    blue2 = rgb2 % 1000
+
+    red = roundHalfUp(red1 - (red1 - red2)/(midpoints + 1)*n)
+    green = roundHalfUp(green1- (green1 - green2)/(midpoints + 1)*n)
+    blue = roundHalfUp(blue1 - (blue1 - blue2)/(midpoints + 1)*n)
+
+    return red * 10**6 + green * 10**3 + blue
 
 #################################################
 # Bonus/Optional
@@ -315,8 +329,8 @@ def testAll():
     # Part B:
     testNearestOdd()
     testNumberOfPoolBalls()
-    # testNumberOfPoolBallRows()
-    # testColorBlender()
+    testNumberOfPoolBallRows()
+    testColorBlender()
     # Bonus:
     # testBonusPlayThreeDiceYahtzee()
     # testBonusFindIntRootsOfCubic()
